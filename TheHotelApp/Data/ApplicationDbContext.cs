@@ -7,11 +7,12 @@ using TheHotelApp.Models;
 
 namespace TheHotelApp.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+            //Database.EnsureCreated();
         }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<ApplicationUser> Users { get; set; }

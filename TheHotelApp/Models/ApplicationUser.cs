@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace TheHotelApp.Models
 {
-    public class ApplicationUser
+    public class ApplicationUser:IdentityUser
     {
         public string CustomerName { get; set; } //ФИО
         public int PassportId { get; set; } //Номер паспорта
