@@ -5,6 +5,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using TheHotelApp.Data;
+using TheHotelApp.Models;
+using TheHotelApp.ViewModels;
 
 namespace TheHotelApp.Services
 {
@@ -41,7 +43,7 @@ namespace TheHotelApp.Services
             return await DbSet.ToArrayAsync();
         }
 
-        public async Task<TEntity> GetItemByIdAsync(Guid? id)
+        public async Task<TEntity> GetItemByIdAsync(string id)
         {
             if (id == null)
             {
@@ -51,9 +53,42 @@ namespace TheHotelApp.Services
             return await DbSet.FindAsync(id);
         }
 
+       // public async Task<TEntity> GetItemByIdAsync(Guid? id)
+      //  {
+       //     if (id == null)
+       //     {
+        //        return null;
+       //     }
+
+      //      return await DbSet.FindAsync(id);
+       // }
+
         public async Task<IEnumerable<TEntity>> SearchForAsync(Expression<Func<TEntity, bool>> expression)
         {
             return await DbSet.Where(expression).ToArrayAsync();
+        }
+        public RoomsAdminIndexViewModel GetAllRoomsAndRoomTypes()
+        {
+
+            var rooms = _context.Rooms.ToList();
+            var roomtypes = _context.RoomTypes.ToList();
+
+            var RoomsAdminIndeViewModel = new RoomsAdminIndexViewModel
+            {
+                Rooms = rooms,
+                RoomTypes = roomtypes
+            };
+            return RoomsAdminIndeViewModel;
+        }
+
+        public async Task<IEnumerable<RoomType>> GetAllRoomTypesAsync()
+        {
+            return await _context.RoomTypes.ToArrayAsync();
+        }
+
+        public IEnumerable<Room> GetAllRooms()
+        {
+            return _context.Rooms.Include(x => x.RoomType);
         }
     }
 }

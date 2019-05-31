@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace TheHotelApp.Data.Migrations
+namespace TheHotelApp.Migrations
 {
-    public partial class CreateIdentitySchema : Migration
+    public partial class Iteration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -40,11 +40,60 @@ namespace TheHotelApp.Data.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    CustomerName = table.Column<string>(nullable: true),
+                    PassportId = table.Column<int>(nullable: false),
+                    PassportSer = table.Column<int>(nullable: false),
+                    Address = table.Column<string>(nullable: true),
+                    CitizenShip = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RoomTypes",
+                columns: table => new
+                {
+                    ID = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    BasePrice = table.Column<decimal>(nullable: false),
+                    Description = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RoomTypes", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ServiceLists",
+                columns: table => new
+                {
+                    ID = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    BasePrice = table.Column<decimal>(nullable: false),
+                    Description = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ServiceLists", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    ID = table.Column<Guid>(nullable: false),
+                    CustomerName = table.Column<string>(nullable: true),
+                    PassportId = table.Column<int>(nullable: false),
+                    PassportSer = table.Column<int>(nullable: false),
+                    Address = table.Column<string>(nullable: true),
+                    CitizenShip = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -93,8 +142,8 @@ namespace TheHotelApp.Data.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(nullable: false),
+                    ProviderKey = table.Column<string>(nullable: false),
                     ProviderDisplayName = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: false)
                 },
@@ -138,8 +187,8 @@ namespace TheHotelApp.Data.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(nullable: false),
-                    LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
-                    Name = table.Column<string>(maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
                     Value = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -150,6 +199,99 @@ namespace TheHotelApp.Data.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Rooms",
+                columns: table => new
+                {
+                    ID = table.Column<string>(nullable: false),
+                    Number = table.Column<int>(nullable: false),
+                    RoomTypeID = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    RoomID = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Rooms", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Rooms_Rooms_RoomID",
+                        column: x => x.RoomID,
+                        principalTable: "Rooms",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Rooms_RoomTypes_RoomTypeID",
+                        column: x => x.RoomTypeID,
+                        principalTable: "RoomTypes",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Bookings",
+                columns: table => new
+                {
+                    ID = table.Column<Guid>(nullable: false),
+                    RoomID = table.Column<Guid>(nullable: false),
+                    RoomID1 = table.Column<string>(nullable: true),
+                    DateCreated = table.Column<DateTime>(nullable: false),
+                    CheckIn = table.Column<DateTime>(nullable: false),
+                    CheckOut = table.Column<DateTime>(nullable: false),
+                    TotalFee = table.Column<decimal>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false),
+                    ApplicationUserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bookings", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Bookings_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Bookings_Rooms_RoomID1",
+                        column: x => x.RoomID1,
+                        principalTable: "Rooms",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Bookings_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UsedServices",
+                columns: table => new
+                {
+                    ID = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    BasePrice = table.Column<decimal>(nullable: false),
+                    Date = table.Column<DateTime>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    BookingId = table.Column<Guid>(nullable: false),
+                    ServiceListId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UsedServices", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_UsedServices_Bookings_BookingId",
+                        column: x => x.BookingId,
+                        principalTable: "Bookings",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UsedServices_ServiceLists_ServiceListId",
+                        column: x => x.ServiceListId,
+                        principalTable: "ServiceLists",
+                        principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -191,6 +333,41 @@ namespace TheHotelApp.Data.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bookings_ApplicationUserId",
+                table: "Bookings",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bookings_RoomID1",
+                table: "Bookings",
+                column: "RoomID1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bookings_UserId",
+                table: "Bookings",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rooms_RoomID",
+                table: "Rooms",
+                column: "RoomID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rooms_RoomTypeID",
+                table: "Rooms",
+                column: "RoomTypeID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UsedServices_BookingId",
+                table: "UsedServices",
+                column: "BookingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UsedServices_ServiceListId",
+                table: "UsedServices",
+                column: "ServiceListId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -211,10 +388,28 @@ namespace TheHotelApp.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "UsedServices");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "Bookings");
+
+            migrationBuilder.DropTable(
+                name: "ServiceLists");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Rooms");
+
+            migrationBuilder.DropTable(
+                name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "RoomTypes");
         }
     }
 }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TheHotelApp.Data;
 
-namespace TheHotelApp.Data.Migrations
+namespace TheHotelApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190531142906_Iteration")]
+    partial class Iteration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -205,6 +207,8 @@ namespace TheHotelApp.Data.Migrations
 
                     b.Property<Guid>("RoomID");
 
+                    b.Property<string>("RoomID1");
+
                     b.Property<decimal>("TotalFee");
 
                     b.Property<Guid>("UserId");
@@ -213,7 +217,7 @@ namespace TheHotelApp.Data.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("RoomID");
+                    b.HasIndex("RoomID1");
 
                     b.HasIndex("UserId");
 
@@ -222,16 +226,20 @@ namespace TheHotelApp.Data.Migrations
 
             modelBuilder.Entity("TheHotelApp.Models.Room", b =>
                 {
-                    b.Property<Guid>("ID")
+                    b.Property<string>("ID")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Description");
 
                     b.Property<int>("Number");
 
-                    b.Property<Guid>("RoomTypeID");
+                    b.Property<string>("RoomID");
+
+                    b.Property<string>("RoomTypeID");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("RoomID");
 
                     b.HasIndex("RoomTypeID");
 
@@ -240,7 +248,7 @@ namespace TheHotelApp.Data.Migrations
 
             modelBuilder.Entity("TheHotelApp.Models.RoomType", b =>
                 {
-                    b.Property<Guid>("ID")
+                    b.Property<string>("ID")
                         .ValueGeneratedOnAdd();
 
                     b.Property<decimal>("BasePrice");
@@ -369,8 +377,7 @@ namespace TheHotelApp.Data.Migrations
 
                     b.HasOne("TheHotelApp.Models.Room", "Room")
                         .WithMany()
-                        .HasForeignKey("RoomID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("RoomID1");
 
                     b.HasOne("TheHotelApp.Models.User", "User")
                         .WithMany("Bookings")
@@ -380,10 +387,13 @@ namespace TheHotelApp.Data.Migrations
 
             modelBuilder.Entity("TheHotelApp.Models.Room", b =>
                 {
+                    b.HasOne("TheHotelApp.Models.Room")
+                        .WithMany("Rooms")
+                        .HasForeignKey("RoomID");
+
                     b.HasOne("TheHotelApp.Models.RoomType", "RoomType")
-                        .WithMany()
-                        .HasForeignKey("RoomTypeID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany("Rooms")
+                        .HasForeignKey("RoomTypeID");
                 });
 
             modelBuilder.Entity("TheHotelApp.Models.UsedService", b =>
