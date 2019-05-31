@@ -1,0 +1,49 @@
+﻿@model TheHotelApp.Models.User
+
+@{
+    ViewData["Title"] = "Детали";
+}
+
+<h2>Детали</h2>
+
+<div>
+    <h4>Клиент</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Фамилия Имя Отчество
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CustomerName)
+        </dd>
+        <dt>
+          Серия паспорта
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PassportSer)
+        </dd>
+        <dt>
+           Номер паспорта
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PassportId)
+        </dd>
+
+        <dt>
+          Адрес
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+        <dt>
+           Гражданство
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CitizenShip)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ID">Редактировать</a> |
+    <a href="~/Home/Index">Вернуться на главную страницу</a>
+</div>

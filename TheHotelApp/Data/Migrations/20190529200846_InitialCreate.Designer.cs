@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TheHotelApp.Data;
 
 namespace TheHotelApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190529200846_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -195,7 +197,9 @@ namespace TheHotelApp.Data.Migrations
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("ApplicationUserId");
+                    b.Property<Guid>("ApplicationUserId");
+
+                    b.Property<string>("ApplicationUserId1");
 
                     b.Property<DateTime>("CheckIn");
 
@@ -207,15 +211,11 @@ namespace TheHotelApp.Data.Migrations
 
                     b.Property<decimal>("TotalFee");
 
-                    b.Property<Guid>("UserId");
-
                     b.HasKey("ID");
 
-                    b.HasIndex("ApplicationUserId");
+                    b.HasIndex("ApplicationUserId1");
 
                     b.HasIndex("RoomID");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Bookings");
                 });
@@ -296,26 +296,6 @@ namespace TheHotelApp.Data.Migrations
                     b.ToTable("UsedServices");
                 });
 
-            modelBuilder.Entity("TheHotelApp.Models.User", b =>
-                {
-                    b.Property<Guid>("ID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Address");
-
-                    b.Property<string>("CitizenShip");
-
-                    b.Property<string>("CustomerName");
-
-                    b.Property<int>("PassportId");
-
-                    b.Property<int>("PassportSer");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Users");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
@@ -363,18 +343,13 @@ namespace TheHotelApp.Data.Migrations
 
             modelBuilder.Entity("TheHotelApp.Models.Booking", b =>
                 {
-                    b.HasOne("TheHotelApp.Models.ApplicationUser")
+                    b.HasOne("TheHotelApp.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("Bookings")
-                        .HasForeignKey("ApplicationUserId");
+                        .HasForeignKey("ApplicationUserId1");
 
                     b.HasOne("TheHotelApp.Models.Room", "Room")
                         .WithMany()
                         .HasForeignKey("RoomID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("TheHotelApp.Models.User", "User")
-                        .WithMany("Bookings")
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

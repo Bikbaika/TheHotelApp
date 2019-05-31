@@ -15,12 +15,12 @@ namespace TheHotelApp.Data
             //Database.EnsureCreated();
         }
         public DbSet<Room> Rooms { get; set; }
-        public DbSet<ApplicationUser> Users { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<RoomType> RoomTypes { get; set; }
         public DbSet<ServiceList> ServiceLists { get; set; }
         public DbSet<UsedService> UsedServices { get; set; }
         public DbSet<Booking> Bookings { get; set; }
-
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

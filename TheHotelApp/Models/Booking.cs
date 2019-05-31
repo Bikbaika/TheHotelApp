@@ -15,8 +15,8 @@ namespace TheHotelApp.Models
         public DateTime CheckIn { get; set; } //Дата прибытия
         public DateTime CheckOut { get; set; } //Дата выезда
         public decimal TotalFee { get; set; } //Стоимость
-        public Guid ApplicationUserId { get; set; } //Номер клиента
-        public virtual ApplicationUser ApplicationUser { get; set; }
+        public Guid UserId { get; set; } //Номер клиента
+        public virtual User User { get; set; }
 
      //   public int Guests { get; set; }
         

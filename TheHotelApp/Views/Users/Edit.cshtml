@@ -1,0 +1,54 @@
+﻿@model TheHotelApp.Models.User
+
+@{
+    ViewData["Title"] = "Редактирование";
+}
+
+<h2>Редактирование</h2>
+
+<h4>Клиента</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ID" />
+            <div class="form-group">
+                <label asp-for="CustomerName" class="control-label">Фамилия Имя Отчество</label>
+                <input asp-for="CustomerName" class="form-control" />
+                <span asp-validation-for="CustomerName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PassportSer" class="control-label">Серия паспорта</label>
+                <input asp-for="PassportSer" class="form-control" />
+                <span asp-validation-for="PassportSer" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PassportId" class="control-label">Номер паспорта</label>
+                <input asp-for="PassportId" class="form-control" />
+                <span asp-validation-for="PassportId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label">Адрес</label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CitizenShip" class="control-label">Гражданство</label>
+                <input asp-for="CitizenShip" class="form-control" />
+                <span asp-validation-for="CitizenShip" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Вернуться на главную страницу</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

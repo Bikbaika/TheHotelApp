@@ -13,6 +13,7 @@ using TheHotelApp.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TheHotelApp.Models;
+using TheHotelApp.Services;
 
 namespace TheHotelApp
 {
@@ -48,6 +49,7 @@ namespace TheHotelApp
               .AddDefaultTokenProviders();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddScoped(typeof(IGenericHotelService<>), typeof(GenericHotelService<>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -76,6 +78,7 @@ namespace TheHotelApp
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+           
         }
     }
 }

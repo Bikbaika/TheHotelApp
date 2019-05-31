@@ -1,0 +1,47 @@
+﻿@model IEnumerable<TheHotelApp.Models.RoomType>
+
+@{
+    ViewData["Title"] = "Виды номеров";
+}
+
+<h2>Виды номеров</h2>
+
+<p>
+    <a asp-action="Create">Создать новый тип номера</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Название
+            </th>
+            <th>
+               Цена
+            </th>
+            <th>
+                Периодичность обслуживания
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BasePrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ID">Редактировать</a> |
+                <a asp-action="Details" asp-route-id="@item.ID">Детали</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID">Удалить</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
